@@ -24,7 +24,6 @@ class LentaClient:
     @staticmethod
     def parse_news_details(link):
         resp = requests.get(link)
-        print(link)
         news_soup = BeautifulSoup(resp.text, "lxml")
 
         result_content = []
@@ -34,7 +33,6 @@ class LentaClient:
             result_content.append(c.text) if len(content) > 0 else ''
 
         image = news_soup.select('.b-topic__title-image .g-picture')
-        print("IMAGE: ", image[0])
         image = image[0].get('src') if len(image) > 0 else ''
 
         title = news_soup.select('.b-topic__title')
