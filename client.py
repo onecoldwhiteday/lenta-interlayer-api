@@ -17,9 +17,10 @@ class LentaClient:
                 'summary': entry.summary,
                 'published': entry.published,
                 'link': entry.link,
-                'image_src': entry.links[1].href
+                'image_src': entry.links[1].href,
+                'category': entry.category
             })
-        return result
+        return {'total_count': len(news_feed.entries), 'results': result, 'returned_count': len(result)}
 
     @staticmethod
     def parse_news_details(link):

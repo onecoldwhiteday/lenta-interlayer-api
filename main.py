@@ -2,10 +2,13 @@ import json
 import os
 
 from flask import Flask, request
+from flask_cors import CORS
+
 from client import LentaClient
 from dotenv import load_dotenv
 
 app = Flask(__name__)
+CORS(app)
 client = LentaClient()
 load_dotenv()
 
@@ -21,6 +24,6 @@ def get_news():
 @app.route('/news-details')
 def get_news_details():
     url = request.args.get('url')
-    r = client.parse_news_details(os.getenv('BASE_URL') + url)
+    r = client.parse_news_details(str(url))
 
     return json.dumps(r, ensure_ascii=False).encode('utf8')
