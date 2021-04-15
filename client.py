@@ -7,10 +7,11 @@ from bs4 import BeautifulSoup
 class LentaClient:
 
     @staticmethod
-    def get_overall_news(offset, limit):
+    def list_news(offset, limit):
         news_feed = feedparser.parse(os.getenv('BASE_URL') + '/rss/news')
         result = []
-        for entry in news_feed.entries:
+        page_end = offset + limit
+        for entry in news_feed.entries[offset:page_end]:
             result.append({
                 'title': entry.title,
                 'summary': entry.summary,
@@ -18,8 +19,7 @@ class LentaClient:
                 'link': entry.link,
                 'image_src': entry.links[1].href
             })
-        page_end = offset + limit
-        return result[offset:page_end]
+        return result
 
     @staticmethod
     def parse_news_details(link):

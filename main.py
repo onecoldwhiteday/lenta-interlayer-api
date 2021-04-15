@@ -14,7 +14,7 @@ load_dotenv()
 def get_news():
     offset = request.args.get('offset') or 0
     limit = request.args.get('limit') or 10
-    r = client.get_overall_news(int(offset), int(limit))
+    r = client.list_news(int(offset), int(limit))
     return json.dumps(r, ensure_ascii=False).encode('utf8')
 
 
