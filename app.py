@@ -17,7 +17,7 @@ def create_app(config_file=config):
 
     @app.route('/')
     def live_check():
-        return app.response_class(statue=200)
+        return 'App is running'
 
     @app.route('/news', methods=['GET'])
     def get_news():
