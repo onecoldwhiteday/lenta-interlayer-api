@@ -23,14 +23,12 @@ def create_app():
         offset = request.args.get('offset') or 0
         limit = request.args.get('limit') or 10
         r = client.list_news(int(offset), int(limit))
-
         return json.dumps(r, ensure_ascii=False).encode('utf8')
 
     @app.route('/news-details')
     def get_news_details():
         url = request.args.get('url')
         r = client.parse_news_details(str(url))
-
         return json.dumps(r, ensure_ascii=False).encode('utf8')
 
     return app
