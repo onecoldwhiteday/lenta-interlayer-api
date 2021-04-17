@@ -1,22 +1,23 @@
-import json
-import os
+from flask import Flask
 
-from flask import Flask, request
+import json
+from flask import request
 from flask_cors import CORS
 
+import config
 from client import LentaClient
 from dotenv import load_dotenv
 
 
-def create_app():
+def create_app(config_file=config):
     app = Flask(__name__)
     load_dotenv()
-    app.config.from_mapping(
-        FLASK_APP=os.getenv('FLASK_APP'),
-        BASE_URL=os.getenv('BASE_URL')
-    )
     CORS(app)
     client = LentaClient()
+
+    @app.route('/')
+    def live_check():
+        return app.response_class(statue=200)
 
     @app.route('/news', methods=['GET'])
     def get_news():
