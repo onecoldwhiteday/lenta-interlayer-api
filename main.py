@@ -7,23 +7,30 @@ from flask_cors import CORS
 from client import LentaClient
 from dotenv import load_dotenv
 
-app = Flask(__name__)
-CORS(app)
-client = LentaClient()
-load_dotenv()
 
+def create_app():
+    app = Flask(__name__)
+    load_dotenv()
+    app.config.from_mapping(
+        FLASK_APP=os.getenv('FLASK_APP'),
+        BASE_URL=os.getenv('BASE_URL')
+    )
+    CORS(app)
+    client = LentaClient()
 
-@app.route('/news', methods=['GET'])
-def get_news():
-    offset = request.args.get('offset') or 0
-    limit = request.args.get('limit') or 10
-    r = client.list_news(int(offset), int(limit))
-    return json.dumps(r, ensure_ascii=False).encode('utf8')
+    @app.route('/news', methods=['GET'])
+    def get_news():
+        offset = request.args.get('offset') or 0
+        limit = request.args.get('limit') or 10
+        r = client.list_news(int(offset), int(limit))
 
+        return json.dumps(r, ensure_ascii=False).encode('utf8')
 
-@app.route('/news-details')
-def get_news_details():
-    url = request.args.get('url')
-    r = client.parse_news_details(str(url))
+    @app.route('/news-details')
+    def get_news_details():
+        url = request.args.get('url')
+        r = client.parse_news_details(str(url))
 
-    return json.dumps(r, ensure_ascii=False).encode('utf8')
+        return json.dumps(r, ensure_ascii=False).encode('utf8')
+
+    return app
